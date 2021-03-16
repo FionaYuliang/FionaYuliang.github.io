@@ -1,0 +1,485 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  
+    <meta name="description" content="PHP,Laravel,MYSQL,JavaScript">
+  
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+  <title>python爬虫之：抓取网易云音乐某首歌曲的热门评论 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"fionayuliang.github.io","root":"/","version":"1.8.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="python爬虫之：抓取网易云音乐某首歌曲的热门评论">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-03-16 15:24" pubdate>
+        2021年3月16日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.9k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      34
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">python爬虫之：抓取网易云音乐某首歌曲的热门评论</h1>
+            
+            <div class="markdown-body">
+              <h1 id="1-抓取高分番剧"><a href="#1-抓取高分番剧" class="headerlink" title="1.抓取高分番剧"></a>1.抓取高分番剧</h1><h2 id="原始网页"><a href="#原始网页" class="headerlink" title="原始网页"></a>原始网页</h2><p><img src="https://uploader.shimo.im/f/GbrF2IqozjV1j7v0.png!thumbnail?fileGuid=xHYJXDKdjxTKJJHR" srcset="/img/loading.gif" lazyload alt="番剧列表页"></p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/anime/index/#season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=-1&style_id=-1&order=4&st=1&sort=0&page=1">https://www.bilibili.com/anime/index/#season_version=-1&amp;area=-1&amp;is_finish=-1&amp;copyright=-1&amp;season_status=-1&amp;season_month=-1&amp;year=-1&amp;style_id=-1&amp;order=4&amp;st=1&amp;sort=0&amp;page=1</a></p>
+<h2 id="python-爬虫代码（储存到数据库）"><a href="#python-爬虫代码（储存到数据库）" class="headerlink" title="python 爬虫代码（储存到数据库）"></a>python 爬虫代码（储存到数据库）</h2><h3 id="主文件-lt-niche-gems-py-gt"><a href="#主文件-lt-niche-gems-py-gt" class="headerlink" title="主文件 &lt;niche_gems.py&gt;"></a>主文件 &lt;niche_gems.py&gt;</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs plain">import requests<br>from bs4 import BeautifulSoup<br>import json<br>import time<br>def getReviewTimes(media_link):<br>    res &#x3D; requests.get(media_link)<br>    soup &#x3D; BeautifulSoup(res.text, &#39;html.parser&#39;)<br>    review_times &#x3D; soup.find_all(&#39;div&#39;, class_&#x3D;&#39;media-info-review-times&#39;)<br>    for i in review_times:<br>        review_time &#x3D; i.text<br>    return review_time<br>def getAnime(url):<br>    res &#x3D; requests.get(url)<br>    graded_data &#x3D; json.loads(res.text)<br>    animes_list &#x3D; graded_data[&#39;data&#39;][&#39;list&#39;]<br>    media_ids &#x3D; []<br>    media_links &#x3D; []<br>    m_orders &#x3D; []<br>    titles &#x3D; []<br>    review_times &#x3D; []<br>    for each in animes_list:<br>        media_id &#x3D; each[&#39;media_id&#39;]<br>        media_ids.append(media_id)<br>        media_link &#x3D; f&#39;https:&#x2F;&#x2F;www.bilibili.com&#x2F;bangumi&#x2F;media&#x2F;md&#123;media_id&#125;&#39;<br>        review_time &#x3D; getReviewTimes(media_link)<br>        review_times.append(review_time)<br>        media_links.append(media_link)<br>        m_order &#x3D; each[&#39;order&#39;].strip()<br>        m_orders.append(m_order)<br>        titles.append(each[&#39;title&#39;])<br>    animes_matrix &#x3D; [media_ids, m_orders, titles, review_times, media_links]<br>    animes_result &#x3D; list(zip(*animes_matrix))<br>    return animes_result<br></code></pre></td></tr></table></figure>
+
+<h3 id="按照评分-by-score"><a href="#按照评分-by-score" class="headerlink" title="按照评分 by score"></a>按照评分 by score</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs plain"><br>import niche_gems<br>import sqlite3<br>import csv<br>import time<br>conn &#x3D; sqlite3.connect(&#39;anime.db&#39;)<br>c &#x3D; conn.cursor()<br>def createTable():<br>    c.execute(&quot;&quot;&quot;CREATE TABLE IF NOT EXISTS animeByScore(<br>        media_id INTEGER PRIMARY KEY,<br>        m_order REAL,<br>        title TEXT,<br>        review_time INTEGER,<br>        media_link TEXT)&quot;&quot;&quot;)<br>def main():<br>    createTable()<br>    for i in range(1, 90):<br>        print(f&#39;page &#123;i&#125; scraping...&#39;)<br>        url_score &#x3D; f&#39;https:&#x2F;&#x2F;api.bilibili.com&#x2F;pgc&#x2F;season&#x2F;index&#x2F;result?season_version&#x3D;-1&amp;area&#x3D;-1&amp;is_finish&#x3D;-1&amp;copyright&#x3D;-1&amp;season_status&#x3D;-1&amp;season_month&#x3D;-1&amp;year&#x3D;-1&amp;style_id&#x3D;-1&amp;order&#x3D;4&amp;st&#x3D;1&amp;sort&#x3D;0&amp;page&#x3D;&#123;i&#125;&amp;season_type&#x3D;1&amp;pagesize&#x3D;20&amp;type&#x3D;1&#39;<br>        time.sleep(1)<br>        animes_results_by_score &#x3D; []<br>        animes_result_by_score &#x3D; niche_gems.getAnime(url_score)<br>        animes_results_by_score.extend(animes_result_by_score)<br>        c.executemany(&#39;INSERT OR IGNORE INTO animeByScore VALUES(?,?,?,?,?)&#39;,<br>                      animes_results_by_score)<br>        conn.commit()<br>        print(f&#39;page &#123;i&#125; animeByScore insert successfully...&#39;)<br>        print(f&#39;page &#123;i&#125; done...&#39;)<br>    c.close()<br>    conn.close()<br>    print(&#39;执行完毕，数据库已关闭！&#39;)<br>if __name__ &#x3D;&#x3D; &quot;__main__&quot;:<br>    main()<br></code></pre></td></tr></table></figure>
+
+<h3 id="按照播放量-by-play-count"><a href="#按照播放量-by-play-count" class="headerlink" title="按照播放量 by play count"></a>按照播放量 by play count</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs plain">import niche_gems<br>import sqlite3<br>conn &#x3D; sqlite3.connect(&#39;anime.db&#39;)<br>c &#x3D; conn.cursor()<br>def createTable():<br>    c.execute(&quot;&quot;&quot;CREATE TABLE IF NOT EXISTS animeByPlaycount(<br>        media_id int primary key，<br>        order int,<br>        title text,<br>        review_time int,<br>        media_link text<br>    )&quot;&quot;&quot;)<br>def query_and_output():<br>    c.execute(&#39;SELECT * from animeByPlaycount SORT BY order&#39;)<br>    data &#x3D; c.fetchall()<br>    c.close()<br>    conn.close()<br>    with open(&#39;&#x2F;Users&#x2F;yao&#x2F;www&#x2F;python&#x2F;&#x2F;bilibili&#x2F;anime&#x2F;animeByPlaycount.txt&#39;, &#39;w&#39;, encoding&#x3D;&#39;utf-8&#39;) as file:<br>        for row in data:<br>            file.write()<br>def main():<br>    url_play_count &#x3D; &#39;https:&#x2F;&#x2F;api.bilibili.com&#x2F;pgc&#x2F;season&#x2F;index&#x2F;result?season_version&#x3D;-1&amp;area&#x3D;-1&amp;is_finish&#x3D;-1&amp;copyright&#x3D;-1&amp;season_status&#x3D;-1&amp;season_month&#x3D;-1&amp;year&#x3D;-1&amp;style_id&#x3D;-1&amp;order&#x3D;2&amp;st&#x3D;1&amp;sort&#x3D;0&amp;page&#x3D;1&amp;season_type&#x3D;1&amp;pagesize&#x3D;20&amp;type&#x3D;1&#39;<br>    animes_result_by_playcount &#x3D; niche_gems.getAnime(url_play_count)<br>    createTable()<br>    c.executemany(&#39;INSERT OR IGNORE INTO animeByPlaycount&#39;)<br>    conn.commit()<br>    print(&#39;animeByPlaycount insert successfully...&#39;)<br>    query_and_output()<br>    print(&#39;animeByPlaycount file saved successfully...&#39;)<br>if __name__ &#x3D;&#x3D; &quot;__main__&quot;:<br>    main()<br></code></pre></td></tr></table></figure>
+
+<h2 id="数据库内容"><a href="#数据库内容" class="headerlink" title="数据库内容"></a>数据库内容</h2><p><img src="https://uploader.shimo.im/f/W9vxXsoi1Nw4XG2b.png!thumbnail?fileGuid=xHYJXDKdjxTKJJHR" srcset="/img/loading.gif" lazyload alt="animate.db/animateByScore"></p>
+<h2 id="从数据库中取出并展示在-html-中"><a href="#从数据库中取出并展示在-html-中" class="headerlink" title="从数据库中取出并展示在 html 中"></a>从数据库中取出并展示在 html 中</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><code class="hljs plain">import sqlite3<br>import csv<br>import pandas as pd<br>from prettytable import PrettyTable<br>conn &#x3D; sqlite3.connect(&#39;anime.db&#39;)<br>c &#x3D; conn.cursor()<br>c.execute(&#39;SELECT * from animeByScore WHERE m_order &gt; 9.7&#39;)<br>data &#x3D; c.fetchall()<br>c.close()<br>conn.close()<br># file_path &#x3D; &#39;&#x2F;Users&#x2F;yao&#x2F;www&#x2F;python&#x2F;bilibili&#x2F;anime&#x2F;animeByScore.csv&#39;<br># with open(file_path, &#39;w&#39;, newline&#x3D;&#39;&#39;, encoding&#x3D;&#39;utf-8&#39;) as f:<br>#     fieldnames &#x3D; [&#39;anime_id&#39;, &#39;m_order&#39;, &#39;title&#39;, &#39;review_time&#39;, &#39;anime_link&#39;]<br>#     f_csv &#x3D; csv.DictWriter(f, fieldnames&#x3D;fieldnames)<br>#     f_csv.writeheader()<br>#     for row in data:<br>#         f_csv.writerow(<br>#             &#123;<br>#                 &#39;anime_id&#39;: row[0],<br>#                 &#39;m_order&#39;: row[1],<br>#                 &#39;title&#39;: row[2],<br>#                 &#39;review_time&#39;: row[3],<br>#                 &#39;anime_link&#39;: row[4]<br>#             &#125;<br>#         )<br>html_uri &#x3D; &#39;&#x2F;Users&#x2F;yao&#x2F;www&#x2F;python&#x2F;bilibili&#x2F;anime&#x2F;animeByScore.html&#39;<br>record_list &#x3D; data<br>title &#x3D; &quot;评分列表&quot;<br>tbody_content &#x3D; &quot;&quot;<br>for record in record_list:<br>    tbody_content &#x3D; tbody_content + f&quot;&quot;&quot;<br>     &lt;tr&gt;<br>        &lt;td&gt;&#123;record[0]&#125;&lt;&#x2F;td&gt;<br>        &lt;td&gt;&#123;record[1]&#125;&lt;&#x2F;td&gt;<br>        &lt;td&gt;&#123;record[2]&#125;&lt;&#x2F;td&gt;<br>        &lt;td&gt;&#123;record[3]&#125;&lt;&#x2F;td&gt;<br>        &lt;td&gt;&#123;record[4]&#125;&lt;&#x2F;td&gt;<br>    &lt;&#x2F;tr&gt;<br>    &quot;&quot;&quot;<br>content &#x3D; f&quot;&quot;&quot;<br>&lt;table&gt;<br>&lt;thead&gt;<br>    &lt;th&gt;anime_id&lt;&#x2F;th&gt;<br>    &lt;th&gt;m_order&lt;&#x2F;th&gt;<br>    &lt;th&gt;title&lt;&#x2F;th&gt;<br>    &lt;th&gt;review_time&lt;&#x2F;th&gt;<br>    &lt;th&gt;anime_link&lt;&#x2F;th&gt;<br>&lt;&#x2F;thead&gt;<br>&lt;tbody&gt;<br>    &#123;tbody_content&#125;<br>&lt;&#x2F;tbody&gt;<br>&lt;&#x2F;table&gt;<br>&quot;&quot;&quot;<br>html &#x3D; f&quot;&quot;&quot;<br>&lt;!DOCTYPE html&gt;<br>&lt;html lang&#x3D;&quot;zh-CN&quot;&gt;<br>&lt;head&gt;<br>&lt;meta charset&#x3D;&quot;utf-8&quot;&gt;<br>&lt;title&gt;&#123;title&#125;&lt;&#x2F;title&gt;<br>&lt;&#x2F;head&gt;<br>&lt;body&gt;<br>&#123;content&#125;<br>&lt;&#x2F;body&gt;<br>&lt;&#x2F;html&gt;<br>&quot;&quot;&quot;<br>with open(html_uri, &#39;w&#39;, newline&#x3D;&#39;&#39;, encoding&#x3D;&#39;utf-8&#39;) as f:<br>    f.write(html)<br>print(&#39;csv file saved (＾－＾)V&#39;)<br></code></pre></td></tr></table></figure>
+
+<h2 id="html-展示效果"><a href="#html-展示效果" class="headerlink" title="html 展示效果"></a>html 展示效果</h2><p><img src="https://uploader.shimo.im/f/7piCCurNzIDREWHa.png!thumbnail?fileGuid=xHYJXDKdjxTKJJHR" srcset="/img/loading.gif" lazyload alt="生成的html"></p>
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h2 id="小技巧：如何把-CSV-转换成-HTML"><a href="#小技巧：如何把-CSV-转换成-HTML" class="headerlink" title="小技巧：如何把 CSV 转换成 HTML"></a>小技巧：如何把 CSV 转换成 HTML</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs plain">from prettytable import PrettyTable<br>file_path &#x3D; &#39;&#x2F;Users&#x2F;yao&#x2F;www&#x2F;python&#x2F;bilibili&#x2F;anime&#x2F;animeByScore.csv&#39;<br>csv_file &#x3D; open(file_path, &#39;r&#39;)<br>csv_file &#x3D; csv_file.readlines()<br>tb &#x3D; PrettyTable(csv_file[0].split(&#39;,&#39;))<br># 这一句也可以这么写<br># table &#x3D; PrettyTable()<br># table.field_names&#x3D;csv_file[0].split(&#39;,&#39;)<br>for row in range(1, 100):<br>    csv_file[row] &#x3D; csv_file[row].split(&#39;,&#39;)<br>    tb.add_row(csv_file[row])<br>html_path &#x3D; &#39;&#x2F;Users&#x2F;yao&#x2F;www&#x2F;python&#x2F;bilibili&#x2F;anime&#x2F;html_file.html&#39;<br>html_file &#x3D; open(html_path, &#39;w&#39;)<br>html_code &#x3D; tb.get_html_string()<br>html_file &#x3D; html_file.write(html_code)<br></code></pre></td></tr></table></figure>
+
+<h1 id="2-抓取视频弹幕并制作图云"><a href="#2-抓取视频弹幕并制作图云" class="headerlink" title="2.抓取视频弹幕并制作图云"></a>2.抓取视频弹幕并制作图云</h1><h2 id="python-爬虫弹幕"><a href="#python-爬虫弹幕" class="headerlink" title="python 爬虫弹幕"></a>python 爬虫弹幕</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs plain">import requests<br>import json<br>import re<br><br>def get_cid(url):<br>    bvid &#x3D; url.split(&#39;&#x2F;&#39;)[4].split(&#39;?&#39;)[0]<br>    danmu_page_link &#x3D; f&#39;https:&#x2F;&#x2F;api.bilibili.com&#x2F;x&#x2F;player&#x2F;pagelist?bvid&#x3D;&#123;bvid&#125;&amp;jsonp&#x3D;jsonp&#39;<br>    res &#x3D; requests.get(danmu_page_link)<br>    cid_page &#x3D; json.loads(res.text)<br>    cid &#x3D; cid_page[&#39;data&#39;][0][&#39;cid&#39;]<br>    # 获取cid时要注意视频是不是多p,自己做小工具时用其中1p就可以<br>    # cids &#x3D; res_dict[&#39;data&#39;][&#39;cid&#39;]<br>    # part_names &#x3D; res_dict[&#39;data&#39;][&#39;part&#39;]<br>    return cid<br>def get_danmu(cid):<br>    danmu_url &#x3D; f&#39;https:&#x2F;&#x2F;api.bilibili.com&#x2F;x&#x2F;v1&#x2F;dm&#x2F;list.so?oid&#x3D;&#123;cid&#125;&#39;<br>    res &#x3D; requests.get(danmu_url)<br>    res_xml &#x3D; res.content.decode(&#39;utf-8&#39;)<br>    pattern &#x3D; re.compile(&#39;&lt;d.*?&gt;(.*?)&lt;&#x2F;d&gt;&#39;)<br>    danmu_list &#x3D; pattern.findall(res_xml)<br>    return danmu_list<br>def save_file(danmu_list):<br>    file_path &#x3D; &#39;&#x2F;Users&#x2F;yao&#x2F;www&#x2F;python&#x2F;bilibili&#x2F;video&#x2F;danmu_file.txt&#39;<br>    with open(file_path, &#39;w&#39;, encoding&#x3D;&#39;utf-8&#39;) as file:<br>        for item in danmu_list:<br>            file.write(item)<br>            file.write(&#39;\n&#39;)<br>def main():<br>    source &#x3D; &#39;https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1xs411Q799?p&#x3D;1&#39;<br>    cid &#x3D; get_cid(source)<br>    danmu_list &#x3D; get_danmu(cid)<br>    save_file(danmu_list)<br>    print(&#39;file saved successfully...&#39;)<br>if __name__ &#x3D;&#x3D; &#39;__main__&#39;:<br>    main()<br></code></pre></td></tr></table></figure>
+
+<h3 id="-1"><a href="#-1" class="headerlink" title=""></a></h3><h2 id="得到的弹幕文本"><a href="#得到的弹幕文本" class="headerlink" title="得到的弹幕文本"></a>得到的弹幕文本</h2><p><img src="https://uploader.shimo.im/f/bmL7w8bGEIt6pI8V.png!thumbnail?fileGuid=xHYJXDKdjxTKJJHR" srcset="/img/loading.gif" lazyload alt="弹幕文本"></p>
+<h3 id="弹幕文本图云分析"><a href="#弹幕文本图云分析" class="headerlink" title="弹幕文本图云分析"></a>弹幕文本图云分析</h3><h3 id="分词代码"><a href="#分词代码" class="headerlink" title="分词代码"></a>分词代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs plain">import jieba<br>from wordcloud import WordCloud<br>file_path &#x3D; &#39;&#x2F;Users&#x2F;yao&#x2F;www&#x2F;python&#x2F;bilibili&#x2F;video&#x2F;danmu_file.txt&#39;<br>with open(file_path, &#39;r&#39;, encoding&#x3D;&#39;utf-8&#39;) as file:<br>    text_str &#x3D; file.read()<br>seg_list &#x3D; jieba.cut(text_str)<br>word_str &#x3D; &quot; &quot;.join(seg_list)<br>font_path &#x3D; &quot;&#x2F;System&#x2F;Library&#x2F;Fonts&#x2F;PingFang.ttc&quot;<br>wc_settintg &#x3D; &#123;<br>    &#39;font_path&#39;: &#39;&#x2F;System&#x2F;Library&#x2F;Fonts&#x2F;PingFang.ttc&#39;,<br>    &#39;background_color&#39;: &#39;white&#39;,<br>    &#39;width&#39;: 1000,<br>    &#39;height&#39;: 860,<br>    &#39;margin&#39;: 2,<br>&#125;<br>wc &#x3D; WordCloud(**wc_settintg).generate(word_str)<br>wc.to_file(&#39;&#x2F;Users&#x2F;yao&#x2F;www&#x2F;python&#x2F;bilibili&#x2F;video&#x2F;xiaojiayu_python_p1.png&#39;)<br>print(&#39;wordcloud done&#39;)<br></code></pre></td></tr></table></figure>
+
+<p>参考视频：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1g7411e7m4">https://www.bilibili.com/video/BV1g7411e7m4</a></p>
+<h3 id="得到的图云"><a href="#得到的图云" class="headerlink" title="得到的图云"></a>得到的图云</h3><p>（B 站的好多弹幕真是越来越不能看了……）</p>
+<p><img src="https://uploader.shimo.im/f/DvLCgWmCYqB4RbJl.png!thumbnail?fileGuid=xHYJXDKdjxTKJJHR" srcset="/img/loading.gif" lazyload alt="图片"></p>
+<h3 id="遇到的问题：生成的图片-中文乱码"><a href="#遇到的问题：生成的图片-中文乱码" class="headerlink" title="遇到的问题：生成的图片 中文乱码"></a>遇到的问题：生成的图片 中文乱码</h3><p>查了一下这是因为中文字体包不适配，然后发现我们用 mac 自带的苹方字体就能非常简单的搞定。做词云的时候用的 Mac，所以 Windows 的解决方法没有尝试。</p>
+<p>本地路径是：</p>
+<p>font_path = “/System/Library/Fonts/PingFang.ttc”</p>
+<p><img src="https://uploader.shimo.im/f/gnsjnKTW75l7CnJb.png!thumbnail?fileGuid=xHYJXDKdjxTKJJHR" srcset="/img/loading.gif" lazyload alt="本地路径"></p>
+<p>在电脑中查看：</p>
+<ol>
+<li>启动台——其他——打开字体册</li>
+</ol>
+<p><img src="https://uploader.shimo.im/f/IXg7PFlvLltkqEYG.png!thumbnail?fileGuid=xHYJXDKdjxTKJJHR" srcset="/img/loading.gif" lazyload alt="Mac的字体册"></p>
+<ol start="2">
+<li>如果你之前没有改过系统字体的话，默认选中苹方简体，右键选择在 Finder 中显示</li>
+</ol>
+<p><img src="https://uploader.shimo.im/f/JNHIQbkInbc4WQWN.png!thumbnail?fileGuid=xHYJXDKdjxTKJJHR" srcset="/img/loading.gif" lazyload alt="选择字体"></p>
+<p><img src="https://uploader.shimo.im/f/ReT6XWuT8VPw0dTs.png!thumbnail?fileGuid=xHYJXDKdjxTKJJHR" srcset="/img/loading.gif" lazyload alt="需要的字体包"></p>
+<p>这就是我们需要的字体包。</p>
+<p>如果不需要其他参数的话，字体路径直接传入 WordCloud()参数就可以了。</p>
+<p>wc = WordCloud(font_path).generate(word_str)</p>
+<p>词云官方文档地址：<a target="_blank" rel="noopener" href="https://github.com/amueller/word_cloud">https://github.com/amueller/word_cloud</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/python/">python</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/03/16/python%E7%88%AC%E8%99%AB%E4%B9%8B%EF%BC%9A%E6%9F%90%E7%94%A8%E6%88%B7%E6%89%80%E6%9C%89%E5%BE%AE%E5%8D%9A%E7%9A%84%E7%AE%80%E5%8D%95%E5%A4%87%E4%BB%BD/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">python爬虫之：某用户所有微博的简单备份</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/03/16/python%E7%88%AC%E8%99%AB%E4%B9%8B%EF%BC%9A%E6%8A%93%E5%8F%96%E8%B1%86%E7%93%A3%E7%94%B5%E5%BD%B1TOP250/">
+                        <span class="hidden-mobile">python爬虫之：抓取豆瓣电影TOP250</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      $('#local-search-input').on('click', function() {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      });
+      $('#modalSearch').on('shown.bs.modal', function() {
+        $('#local-search-input').focus();
+      });
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
