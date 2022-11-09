@@ -20,7 +20,7 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-  <title>Promise 的两个封装实现 - Hexo</title>
+  <title>2021年英文阅读年终总结 - Hexo</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
 
@@ -165,7 +165,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="Promise 的两个封装实现">
+            <span class="h2" id="subtitle" title="2021年英文阅读年终总结">
               
             </span>
 
@@ -175,8 +175,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2022-09-16 22:30" pubdate>
-        2022年9月16日 晚上
+      <time datetime="2022-02-01 16:50" pubdate>
+        2022年2月1日 下午
       </time>
     </span>
   
@@ -187,7 +187,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      226 字
+      1.2k 字
     </span>
   
 
@@ -197,7 +197,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      3
+      13
        分钟
     </span>
   
@@ -227,13 +227,32 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Promise 的两个封装实现</h1>
+            <h1 style="display: none">2021年英文阅读年终总结</h1>
             
             <div class="markdown-body">
-              <h4 id="使用Promise封装异步图片加载"><a href="#使用Promise封装异步图片加载" class="headerlink" title="使用Promise封装异步图片加载"></a>使用Promise封装异步图片加载</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-keyword">function</span> load<span class="hljs-constructor">ImageAsync(<span class="hljs-params">url</span>)</span> &#123;<br>  return <span class="hljs-keyword">new</span> <span class="hljs-constructor">Promise(<span class="hljs-params">function</span>(<span class="hljs-params">resolve</span>, <span class="hljs-params">reject</span>)</span> &#123;<br>    const image = <span class="hljs-keyword">new</span> <span class="hljs-constructor">Image()</span>;<br><br>    image.onload = <span class="hljs-keyword">function</span><span class="hljs-literal">()</span> &#123;<br>      resolve(image);<br>    &#125;;<br><br>    image.onerror = <span class="hljs-keyword">function</span><span class="hljs-literal">()</span> &#123;<br>      reject(<span class="hljs-keyword">new</span> <span class="hljs-constructor">Error(&#x27;Could <span class="hljs-params">not</span> <span class="hljs-params">load</span> <span class="hljs-params">image</span> <span class="hljs-params">at</span> &#x27; + <span class="hljs-params">url</span>)</span>);<br>    &#125;;<br><br>    image.src = url;<br>  &#125;);<br>&#125;<br></code></pre></td></tr></table></figure>
-<h4 id="使用Promise对象实现AJAX操作"><a href="#使用Promise对象实现AJAX操作" class="headerlink" title="使用Promise对象实现AJAX操作"></a>使用Promise对象实现AJAX操作</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> getJSON = <span class="hljs-keyword">function</span>(<span class="hljs-params">url</span>) &#123;<br>  <span class="hljs-keyword">const</span> promise = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">resolve, reject</span>)&#123;<br>    <span class="hljs-keyword">const</span> handler = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>      <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">readyState</span> !== <span class="hljs-number">4</span>) &#123;<br>        <span class="hljs-keyword">return</span>;<br>      &#125;<br>      <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">status</span> === <span class="hljs-number">200</span>) &#123;<br>        <span class="hljs-title function_">resolve</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">response</span>);<br>      &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-title function_">reject</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">statusText</span>));<br>      &#125;<br>    &#125;;<br>    <span class="hljs-keyword">const</span> client = <span class="hljs-keyword">new</span> <span class="hljs-title class_">XMLHttpRequest</span>();<br>    client.<span class="hljs-title function_">open</span>(<span class="hljs-string">&quot;GET&quot;</span>, url);<br>    client.<span class="hljs-property">onreadystatechange</span> = handler;<br>    client.<span class="hljs-property">responseType</span> = <span class="hljs-string">&quot;json&quot;</span>;<br>    client.<span class="hljs-title function_">setRequestHeader</span>(<span class="hljs-string">&quot;Accept&quot;</span>, <span class="hljs-string">&quot;application/json&quot;</span>);<br>    client.<span class="hljs-title function_">send</span>();<br><br>  &#125;);<br><br>  <span class="hljs-keyword">return</span> promise;<br>&#125;;<br><br><span class="hljs-title function_">getJSON</span>(<span class="hljs-string">&quot;/posts.json&quot;</span>).<span class="hljs-title function_">then</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">json</span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Contents: &#x27;</span> + json);<br>&#125;, <span class="hljs-keyword">function</span>(<span class="hljs-params">error</span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;出错了&#x27;</span>, error);<br>&#125;);<br></code></pre></td></tr></table></figure>
-
-<p>上面代码中，getJSON是对 XMLHttpRequest 对象的封装，用于发出一个针对 JSON 数据的 HTTP 请求，并且返回一个Promise对象。需要注意的是，在getJSON内部，resolve函数和reject函数调用时，都带有参数。</p>
+              <p>这是因为疫情无法回老家过年的第二个春节。借此辞旧迎新之际，盘点一下2021年英文阅读的突破和收获。</p>
+<p>7月-10月份，读完了2部短篇小说《了不起的盖茨比》《月亮与六便士》，以及2部长篇小说，《傲慢与偏见》《简爱》。</p>
+<h3 id="The-Great-Gatsby"><a href="#The-Great-Gatsby" class="headerlink" title="The Great Gatsby"></a>The Great Gatsby</h3><p>《了不起的盖茨比》，由于它的名气和主题，一直以为是个俗套华丽的爱情故事，阅读之前好奇，是否原作和电影一样华而不实，但当我开始为一段又一段句子暗暗激动时，心想，应该是从此以后喜欢读英文小说了，终于get到了英文小说的美妙之处。在菲茨杰拉德笔下，哪怕微风轻轻吹动黛西衣领上的绒毛，都描写得那么让人心动。</p>
+<blockquote>
+<p>It was James Gatz who had been loafing along the beach that afternoon in a torn green jersey and a pair of canvas pants, but it was already Jay Gatsby who borrowed a row-boat, pulled out to the Tuolomee and informed Cody that a wind might catch him and break him up in half an hour.</p>
+</blockquote>
+<blockquote>
+<p>But his heart was in a constant, turbulent riot.The most grotesque and fantastic conceits haunted him in his bed at night. A universe of ineffable gaudiness spun itself out in his brain while the clock ticked on the wash-stand and the moon soaked with wet light his tangled clothes upon the floor. Each night he added to the pattern of his fancies until drowsiness closed down upon some vivid scene with an oblivious embrace. For a while these reveries provided an outlet  for his imagination; they were a satisfactory hint of the unreality of reality, a promise that the rock of the world was founded securely on a fairy’s wing.</p>
+</blockquote>
+<p>阅读建议：全书5万字，若不在意剧透，可以先通过电影熟悉基本情节，再读小说，这样可以对整体剧情有个简单地把握，再去细细体会其中描写。</p>
+<h3 id="The-Moon-and-Sixpence"><a href="#The-Moon-and-Sixpence" class="headerlink" title="The Moon and Sixpence"></a>The Moon and Sixpence</h3><p>《月亮与六便士》，追逐梦想就是追逐厄运。<br>这段话初次读到便被击中，现在终于了解它的来源。</p>
+<p><img src="http://tva1.sinaimg.cn/large/006hVAtMly1h7yv4dwubxj30pn2bqn7j.jpg" srcset="/img/loading.gif" lazyload alt="月亮与六便士选段"></p>
+<p>阅读建议：Chapter1 和 Chapter2 带有强烈的艺术评论性质，是全书最难读的地方，其余部分是叙事小说文体，共5万字。如果觉得前两章读不下去，可以先看叙事部分，再看毛姆本人是如何评论这个故事的。</p>
+<h3 id="Pride-and-Prejudice"><a href="#Pride-and-Prejudice" class="headerlink" title="Pride and Prejudice"></a>Pride and Prejudice</h3><p>《傲慢与偏见》，工作不忙的时候，每晚大概有一个小时的阅读，周末的时候每天读两三个小时。沉浸其中迫不及待想要知晓接下来的情节，全部读完花了18天。文学作品提供了大量丰富的细节，伊丽莎白对达西的小心思，姑妈家对简和伊丽莎白两人命运的影响，班内特先生辛辣的幽默，还有姐妹两人之间互相打趣的俏皮话，都是只有原著才能提供的。</p>
+<p><img src="http://tva1.sinaimg.cn/large/006hVAtMly1h7yv50oatbj30u013znc5.jpg" srcset="/img/loading.gif" lazyload alt="傲慢与偏见选段"></p>
+<h3 id="Jane-Eyre"><a href="#Jane-Eyre" class="headerlink" title="Jane Eyre"></a>Jane Eyre</h3><p>《傲慢与偏见》12万多字，《简爱》18万多字，无论字数还是故事风格，都很适合作为衔接。所以趁热打铁开启了《简爱》的阅读。不同于前者英式乡村田园风情，简爱带有明显阴郁的哥特的色彩，和基督教文化色彩也更浓一些。</p>
+<p>感到幸运（或者不幸）的一点是，这两本书的中文版我没有看过，所以小说情节对我来说是完全崭新的，小时候在书店翻过几页《简爱》，孤儿院互相取暖的伙伴不幸去世，简爱遭受的种种让幼小的我喘不过气来。再拿起这本书，已经是十几年后了。</p>
+<p><img src="http://tva1.sinaimg.cn/large/006hVAtMly1h7yv58u34ej30u013zduu.jpg" srcset="/img/loading.gif" lazyload alt="简爱选段"></p>
+<p>少女时期的我对外国名著完全不感冒，佶屈聱牙的翻译，冗长枯燥的人名，动辄大段毫无共鸣的环境描写，都把我拦在了大门外。而今我如饥似渴读完两本原版名著，陶醉其中的同时也深感幼年启蒙的重要性，英美文学这扇门，终于推开了一条小缝。</p>
+<p><img src="http://tva1.sinaimg.cn/large/006hVAtMly1h7yv78emhyj30pt0h54ce.jpg" srcset="/img/loading.gif" lazyload alt="电影选择的是2011年版本"></p>
+<h3 id="TOFEL-Reading"><a href="#TOFEL-Reading" class="headerlink" title="TOFEL Reading"></a>TOFEL Reading</h3><p>夏天业务忙碌的碎片事件做点托福阅读，打印网上整理好的分类文章，生物、艺术、生态、心理等，其中生物篇做的最多。15分钟一篇的练手，如同炎热天气中一口气吃下半个冰镇西瓜。</p>
+<p>喜欢非虚构阅读，记录下文章提及学科专有名词，词根衍生的常见其他名词，笔尖在纸张上行走，像一只勤奋的小蚂蚁。很多学科名词大概在托福阅读以外的地方不会再用，但天然喜欢它们，仿佛带着某种既定的安宁和秩序。</p>
+<p><img src="http://tva1.sinaimg.cn/large/006hVAtMly1h7yv7de461j30u0140ap5.jpg" srcset="/img/loading.gif" lazyload alt="随便读读"></p>
 
             </div>
             <hr>
@@ -244,7 +263,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/JavaScript/">JavaScript</a>
+                      <a class="hover-with-bg" href="/tags/%E8%8B%B1%E8%AF%AD/">英语</a>
                     
                   </div>
                 
@@ -261,12 +280,18 @@
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/2022/07/20/%E7%BB%86%E8%AF%B4%E6%95%B0%E7%BB%84%E5%B8%B8%E7%94%A8%E9%81%8D%E5%8E%86%E7%9A%84%E6%96%B9%E6%B3%95/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">细说数组常用遍历的方法</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/09/10/JavaScript%20%E6%B7%B1%E5%85%A5%E7%BB%A7%E6%89%BF%E7%9A%84%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%92%8C%E4%BC%98%E7%BC%BA%E7%82%B9/">
-                        <span class="hidden-mobile">JavaScript 深入继承的六种方式和优缺点</span>
+                      <a href="/2021/03/16/%E6%95%B0%E7%BB%84%E5%86%85%E7%BD%AE%E6%8E%92%E5%BA%8F%E5%87%BD%E6%95%B0%E5%AF%B9%E6%AF%94/">
+                        <span class="hidden-mobile">数组内置排序函数对比</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
