@@ -1,0 +1,475 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  
+    <meta name="description" content="一位女性程序员的自我修养-PHP,Laravel,MYSQL,JavaScript,Vue,React">
+  
+  <meta name="author" content="FionaYuliang">
+  <meta name="keywords" content="">
+  
+  <title>Webpack高级配置1：SourceMap如何提升开发体验 - 雪舟寺的技术博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"fionayuliang.github.io","root":"/","version":"1.8.8","typing":{"enable":true,"typeSpeed":85,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  <header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>雪舟寺</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Webpack高级配置1：SourceMap如何提升开发体验">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-11-24 19:39" pubdate>
+        2022年11月24日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      46
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Webpack高级配置1：SourceMap如何提升开发体验</h1>
+            
+            <div class="markdown-body">
+              <h1 id="提升打包构建速度-lifting-speed"><a href="#提升打包构建速度-lifting-speed" class="headerlink" title="提升打包构建速度 lifting speed"></a>提升打包构建速度 lifting speed</h1><h2 id="HotModuleReplacement"><a href="#HotModuleReplacement" class="headerlink" title="HotModuleReplacement"></a>HotModuleReplacement</h2><h3 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h3><p>开发时修改了其中一个模块代码，Webpack 默认会将所有模块全部重新打包编译，速度很慢。所以需要做到修改某个模块代码，就只有这个模块代码需要重新打包编译，其他模块不变。</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>HotModuleReplacement（HMR&#x2F;热模块替换）：在程序运行中，替换、添加或删除模块，而无需重新加载整个页面。</p>
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><ol>
+<li>基本配置</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  <span class="hljs-comment">// 其他省略</span><br>  <span class="hljs-attr">devServer</span>: &#123;<br>    <span class="hljs-attr">host</span>: <span class="hljs-string">&quot;localhost&quot;</span>, <span class="hljs-comment">// 启动服务器域名</span><br>    <span class="hljs-attr">port</span>: <span class="hljs-string">&quot;3000&quot;</span>, <span class="hljs-comment">// 启动服务器端口号</span><br>    <span class="hljs-attr">open</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// 是否自动打开浏览器</span><br>    <span class="hljs-attr">hot</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// 开启HMR功能（只能用于开发环境，生产环境不需要了）</span><br>  &#125;,<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>此时 css 样式经过 style-loader 处理，已经具备 HMR 功能了。<br>但是 js 还不行。</p>
+<ol start="2">
+<li>JS 配置</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs js&#123;17-28&#125;">// main.js<br>import count from &quot;./js/count&quot;;<br>import sum from &quot;./js/sum&quot;;<br>// 引入资源，Webpack才会对其打包<br>import &quot;./css/iconfont.css&quot;;<br>import &quot;./css/index.css&quot;;<br>import &quot;./less/index.less&quot;;<br>import &quot;./sass/index.sass&quot;;<br>import &quot;./sass/index.scss&quot;;<br>import &quot;./styl/index.styl&quot;;<br><br>const result1 = count(2, 1);<br>console.log(result1);<br>const result2 = sum(1, 2, 3, 4);<br>console.log(result2);<br><br>// 判断是否支持HMR功能<br>if (module.hot) &#123;<br>  module.hot.accept(&quot;./js/count.js&quot;, function (count) &#123;<br>    const result1 = count(2, 1);<br>    console.log(result1);<br>  &#125;);<br><br>  module.hot.accept(&quot;./js/sum.js&quot;, function (sum) &#123;<br>    const result2 = sum(1, 2, 3, 4);<br>    console.log(result2);<br>  &#125;);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>上面这样写会很麻烦，所以实际开发会使用其他 loader 来解决。</p>
+<p>比如：<a target="_blank" rel="noopener" href="https://github.com/vuejs/vue-loader">vue-loader</a>, [react-hot-loader](<a target="_blank" rel="noopener" href="https://github.com/gaearo">https://github.com/gaearo</a> n&#x2F;react-hot-loader)。</p>
+<h2 id="OneOf"><a href="#OneOf" class="headerlink" title="OneOf"></a>OneOf</h2><h3 id="问题背景-1"><a href="#问题背景-1" class="headerlink" title="问题背景"></a>问题背景</h3><p>打包时每个文件都会经过所有 loader 处理，虽然因为 <code>test</code> 正则原因实际没有处理上，但是都要过一遍。比较慢。</p>
+<h3 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h3><p>顾名思义就是只能匹配上一个 loader, 剩下的就不匹配了。</p>
+<h3 id="使用方法：将所有的loader匹配数组都放在-oneOf-之中"><a href="#使用方法：将所有的loader匹配数组都放在-oneOf-之中" class="headerlink" title="使用方法：将所有的loader匹配数组都放在 oneOf 之中"></a>使用方法：将所有的loader匹配数组都放在 oneOf 之中</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;path&quot;</span>);<br><span class="hljs-keyword">const</span> <span class="hljs-title class_">ESLintWebpackPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;eslint-webpack-plugin&quot;</span>);<br><span class="hljs-keyword">const</span> <span class="hljs-title class_">HtmlWebpackPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;html-webpack-plugin&quot;</span>);<br><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  <span class="hljs-attr">entry</span>: <span class="hljs-string">&quot;./src/main.js&quot;</span>,<br>  <span class="hljs-attr">output</span>: &#123;<br>    <span class="hljs-attr">path</span>: <span class="hljs-literal">undefined</span>, <span class="hljs-comment">// 开发模式没有输出，不需要指定输出目录</span><br>    <span class="hljs-attr">filename</span>: <span class="hljs-string">&quot;static/js/main.js&quot;</span>, <span class="hljs-comment">// 将 js 文件输出到 static/js 目录中</span><br>    <span class="hljs-comment">// clean: true, // 开发模式没有输出，不需要清空输出结果</span><br>  &#125;,<br>  <span class="hljs-attr">module</span>: &#123;<br>    <span class="hljs-attr">rules</span>: [<br>      &#123;<br>        <span class="hljs-attr">oneOf</span>: [<br>          &#123;<br>            <span class="hljs-comment">// 用来匹配 .css 结尾的文件</span><br>            <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.css$/</span>,<br>            <span class="hljs-comment">// use 数组里面 Loader 执行顺序是从右到左</span><br>            <span class="hljs-attr">use</span>: [<span class="hljs-string">&quot;style-loader&quot;</span>, <span class="hljs-string">&quot;css-loader&quot;</span>],<br>          &#125;,<br>          &#123;<br>            <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.less$/</span>,<br>            <span class="hljs-attr">use</span>: [<span class="hljs-string">&quot;style-loader&quot;</span>, <span class="hljs-string">&quot;css-loader&quot;</span>, <span class="hljs-string">&quot;less-loader&quot;</span>],<br>          &#125;,<br>          &#123;<br>            <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.s[ac]ss$/</span>,<br>            <span class="hljs-attr">use</span>: [<span class="hljs-string">&quot;style-loader&quot;</span>, <span class="hljs-string">&quot;css-loader&quot;</span>, <span class="hljs-string">&quot;sass-loader&quot;</span>],<br>          &#125;,<br>          &#123;<br>            <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.styl$/</span>,<br>            <span class="hljs-attr">use</span>: [<span class="hljs-string">&quot;style-loader&quot;</span>, <span class="hljs-string">&quot;css-loader&quot;</span>, <span class="hljs-string">&quot;stylus-loader&quot;</span>],<br>          &#125;,<br>          &#123;<br>            <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.(png|jpe?g|gif|webp)$/</span>,<br>            <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;asset&quot;</span>,<br>            <span class="hljs-attr">parser</span>: &#123;<br>              <span class="hljs-attr">dataUrlCondition</span>: &#123;<br>                <span class="hljs-attr">maxSize</span>: <span class="hljs-number">10</span> * <span class="hljs-number">1024</span>, <span class="hljs-comment">// 小于10kb的图片会被base64处理</span><br>              &#125;,<br>            &#125;,<br>            <span class="hljs-attr">generator</span>: &#123;<br>              <span class="hljs-comment">// 将图片文件输出到 static/imgs 目录中</span><br>              <span class="hljs-comment">// 将图片文件命名 [hash:8][ext][query]</span><br>              <span class="hljs-comment">// [hash:8]: hash值取8位</span><br>              <span class="hljs-comment">// [ext]: 使用之前的文件扩展名</span><br>              <span class="hljs-comment">// [query]: 添加之前的query参数</span><br>              <span class="hljs-attr">filename</span>: <span class="hljs-string">&quot;static/imgs/[hash:8][ext][query]&quot;</span>,<br>            &#125;,<br>          &#125;,<br>          &#123;<br>            <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.(ttf|woff2?)$/</span>,<br>            <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;asset/resource&quot;</span>,<br>            <span class="hljs-attr">generator</span>: &#123;<br>              <span class="hljs-attr">filename</span>: <span class="hljs-string">&quot;static/media/[hash:8][ext][query]&quot;</span>,<br>            &#125;,<br>          &#125;,<br>          &#123;<br>            <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.js$/</span>,<br>            <span class="hljs-attr">exclude</span>: <span class="hljs-regexp">/node_modules/</span>, <span class="hljs-comment">// 排除node_modules代码不编译</span><br>            <span class="hljs-attr">loader</span>: <span class="hljs-string">&quot;babel-loader&quot;</span>,<br>          &#125;,<br>        ],<br>      &#125;,<br>    ],<br>  &#125;,<br>  <span class="hljs-attr">plugins</span>: [<br>    <span class="hljs-keyword">new</span> <span class="hljs-title class_">ESLintWebpackPlugin</span>(&#123;<br>      <span class="hljs-comment">// 指定检查文件的根目录</span><br>      <span class="hljs-attr">context</span>: path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&quot;../src&quot;</span>),<br>    &#125;),<br>    <span class="hljs-keyword">new</span> <span class="hljs-title class_">HtmlWebpackPlugin</span>(&#123;<br>      <span class="hljs-comment">// 以 public/index.html 为模板创建文件</span><br>      <span class="hljs-comment">// 新的html文件有两个特点：1. 内容和源文件一致 2. 自动引入打包生成的js等资源</span><br>      <span class="hljs-attr">template</span>: path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&quot;../public/index.html&quot;</span>),<br>    &#125;),<br>  ],<br>  <span class="hljs-comment">// 开发服务器</span><br>  <span class="hljs-attr">devServer</span>: &#123;<br>    <span class="hljs-attr">host</span>: <span class="hljs-string">&quot;localhost&quot;</span>, <span class="hljs-comment">// 启动服务器域名</span><br>    <span class="hljs-attr">port</span>: <span class="hljs-string">&quot;3000&quot;</span>, <span class="hljs-comment">// 启动服务器端口号</span><br>    <span class="hljs-attr">open</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// 是否自动打开浏览器</span><br>    <span class="hljs-attr">hot</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// 开启HMR功能</span><br>  &#125;,<br>  <span class="hljs-attr">mode</span>: <span class="hljs-string">&quot;development&quot;</span>,<br>  <span class="hljs-attr">devtool</span>: <span class="hljs-string">&quot;cheap-module-source-map&quot;</span>,<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>生产模式也是如此配置。</p>
+<h2 id="Include-x2F-Exclude"><a href="#Include-x2F-Exclude" class="headerlink" title="Include&#x2F;Exclude"></a>Include&#x2F;Exclude</h2><p>·</p>
+<h3 id="问题背景-2"><a href="#问题背景-2" class="headerlink" title="问题背景"></a>问题背景</h3><p>开发时需要使用第三方的库或插件，所有文件都下载到 node_modules 中了。而这些文件是不需要编译可以直接使用的。所以在对 js 文件处理时，要排除 node_modules 下面的文件。</p>
+<h3 id="解决方案-2"><a href="#解决方案-2" class="headerlink" title="解决方案"></a>解决方案</h3><ul>
+<li><p><code>include</code> 包含，只处理 xxx 文件</p>
+</li>
+<li><p><code>exclude</code> ，排除，除了 xxx 文件以外其他文件都处理</p>
+</li>
+</ul>
+<h3 id="怎么用"><a href="#怎么用" class="headerlink" title="怎么用"></a>怎么用</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><code class="hljs js&#123;60-61,72&#125;">const path = require(&quot;path&quot;);<br>const ESLintWebpackPlugin = require(&quot;eslint-webpack-plugin&quot;);<br>const HtmlWebpackPlugin = require(&quot;html-webpack-plugin&quot;);<br><br>module.exports = &#123;<br>  entry: &quot;./src/main.js&quot;,<br>  output: &#123;<br>    path: undefined, // 开发模式没有输出，不需要指定输出目录<br>    filename: &quot;static/js/main.js&quot;, // 将 js 文件输出到 static/js 目录中<br>    // clean: true, // 开发模式没有输出，不需要清空输出结果<br>  &#125;,<br>  module: &#123;<br>    rules: [<br>      &#123;<br>        oneOf: [<br>          &#123;<br>            // 用来匹配 .css 结尾的文件<br>            test: /\.css$/,<br>            // use 数组里面 Loader 执行顺序是从右到左<br>            use: [&quot;style-loader&quot;, &quot;css-loader&quot;],<br>          &#125;,<br>          &#123;<br>            test: /\.less$/,<br>            use: [&quot;style-loader&quot;, &quot;css-loader&quot;, &quot;less-loader&quot;],<br>          &#125;,<br>          &#123;<br>            test: /\.s[ac]ss$/,<br>            use: [&quot;style-loader&quot;, &quot;css-loader&quot;, &quot;sass-loader&quot;],<br>          &#125;,<br>          &#123;<br>            test: /\.styl$/,<br>            use: [&quot;style-loader&quot;, &quot;css-loader&quot;, &quot;stylus-loader&quot;],<br>          &#125;,<br>          &#123;<br>            test: /\.(png|jpe?g|gif|webp)$/,<br>            type: &quot;asset&quot;,<br>            parser: &#123;<br>              dataUrlCondition: &#123;<br>                maxSize: 10 * 1024, // 小于10kb的图片会被base64处理<br>              &#125;,<br>            &#125;,<br>            generator: &#123;<br>              // 将图片文件输出到 static/imgs 目录中<br>              // 将图片文件命名 [hash:8][ext][query]<br>              // [hash:8]: hash值取8位<br>              // [ext]: 使用之前的文件扩展名<br>              // [query]: 添加之前的query参数<br>              filename: &quot;static/imgs/[hash:8][ext][query]&quot;,<br>            &#125;,<br>          &#125;,<br>          &#123;<br>            test: /\.(ttf|woff2?)$/,<br>            type: &quot;asset/resource&quot;,<br>            generator: &#123;<br>              filename: &quot;static/media/[hash:8][ext][query]&quot;,<br>            &#125;,<br>          &#125;,<br>          &#123;<br>            test: /\.js$/,<br>            // exclude: /node_modules/, // 排除node_modules代码不编译<br>            include: path.resolve(__dirname, &quot;../src&quot;), // 也可以用包含<br>            loader: &quot;babel-loader&quot;,<br>          &#125;,<br>        ],<br>      &#125;,<br>    ],<br>  &#125;,<br>  plugins: [<br>    new ESLintWebpackPlugin(&#123;<br>      // 指定检查文件的根目录<br>      context: path.resolve(__dirname, &quot;../src&quot;),<br>      exclude: &quot;node_modules&quot;, // 默认值<br>    &#125;),<br>    new HtmlWebpackPlugin(&#123;<br>      // 以 public/index.html 为模板创建文件<br>      // 新的html文件有两个特点：1. 内容和源文件一致 2. 自动引入打包生成的js等资源<br>      template: path.resolve(__dirname, &quot;../public/index.html&quot;),<br>    &#125;),<br>  ],<br>  // 开发服务器<br>  devServer: &#123;<br>    host: &quot;localhost&quot;, // 启动服务器域名<br>    port: &quot;3000&quot;, // 启动服务器端口号<br>    open: true, // 是否自动打开浏览器<br>    hot: true, // 开启HMR功能<br>  &#125;,<br>  mode: &quot;development&quot;,<br>  devtool: &quot;cheap-module-source-map&quot;,<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>生产模式也是如此配置。</p>
+<h2 id="Cache"><a href="#Cache" class="headerlink" title="Cache"></a>Cache</h2><h3 id="问题背景-3"><a href="#问题背景-3" class="headerlink" title="问题背景"></a>问题背景</h3><p>每次打包时 js 文件都要经过 Eslint 检查 和 Babel 编译，速度比较慢。可以缓存之前的 Eslint 检查 和 Babel 编译结果，这样第二次打包时速度就会更快了。</p>
+<h3 id="解决方案-3"><a href="#解决方案-3" class="headerlink" title="解决方案"></a>解决方案</h3><p>对 Eslint 检查 和 Babel 编译结果进行缓存。</p>
+<h3 id="使用方法-1"><a href="#使用方法-1" class="headerlink" title="使用方法"></a>使用方法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><code class="hljs js&#123;63-66,77-82&#125;">const path = require(&quot;path&quot;);<br>const ESLintWebpackPlugin = require(&quot;eslint-webpack-plugin&quot;);<br>const HtmlWebpackPlugin = require(&quot;html-webpack-plugin&quot;);<br><br>module.exports = &#123;<br>  entry: &quot;./src/main.js&quot;,<br>  output: &#123;<br>    path: undefined, // 开发模式没有输出，不需要指定输出目录<br>    filename: &quot;static/js/main.js&quot;, // 将 js 文件输出到 static/js 目录中<br>    // clean: true, // 开发模式没有输出，不需要清空输出结果<br>  &#125;,<br>  module: &#123;<br>    rules: [<br>      &#123;<br>        oneOf: [<br>          &#123;<br>            // 用来匹配 .css 结尾的文件<br>            test: /\.css$/,<br>            // use 数组里面 Loader 执行顺序是从右到左<br>            use: [&quot;style-loader&quot;, &quot;css-loader&quot;],<br>          &#125;,<br>          &#123;<br>            test: /\.less$/,<br>            use: [&quot;style-loader&quot;, &quot;css-loader&quot;, &quot;less-loader&quot;],<br>          &#125;,<br>          &#123;<br>            test: /\.s[ac]ss$/,<br>            use: [&quot;style-loader&quot;, &quot;css-loader&quot;, &quot;sass-loader&quot;],<br>          &#125;,<br>          &#123;<br>            test: /\.styl$/,<br>            use: [&quot;style-loader&quot;, &quot;css-loader&quot;, &quot;stylus-loader&quot;],<br>          &#125;,<br>          &#123;<br>            test: /\.(png|jpe?g|gif|webp)$/,<br>            type: &quot;asset&quot;,<br>            parser: &#123;<br>              dataUrlCondition: &#123;<br>                maxSize: 10 * 1024, // 小于10kb的图片会被base64处理<br>              &#125;,<br>            &#125;,<br>            generator: &#123;<br>              // 将图片文件输出到 static/imgs 目录中<br>              // 将图片文件命名 [hash:8][ext][query]<br>              // [hash:8]: hash值取8位<br>              // [ext]: 使用之前的文件扩展名<br>              // [query]: 添加之前的query参数<br>              filename: &quot;static/imgs/[hash:8][ext][query]&quot;,<br>            &#125;,<br>          &#125;,<br>          &#123;<br>            test: /\.(ttf|woff2?)$/,<br>            type: &quot;asset/resource&quot;,<br>            generator: &#123;<br>              filename: &quot;static/media/[hash:8][ext][query]&quot;,<br>            &#125;,<br>          &#125;,<br>          &#123;<br>            test: /\.js$/,<br>            // exclude: /node_modules/, // 排除node_modules代码不编译<br>            include: path.resolve(__dirname, &quot;../src&quot;), // 也可以用包含<br>            loader: &quot;babel-loader&quot;,<br>            options: &#123;<br>              cacheDirectory: true, // 开启babel编译缓存<br>              cacheCompression: false, // 缓存文件不要压缩<br>            &#125;,<br>          &#125;,<br>        ],<br>      &#125;,<br>    ],<br>  &#125;,<br>  plugins: [<br>    new ESLintWebpackPlugin(&#123;<br>      // 指定检查文件的根目录<br>      context: path.resolve(__dirname, &quot;../src&quot;),<br>      exclude: &quot;node_modules&quot;, // 默认值<br>      cache: true, // 开启缓存<br>      // 缓存目录，能让第二次打包的速度变得很快<br>      cacheLocation: path.resolve(<br>        __dirname,<br>        &quot;../node_modules/.cache/.eslintcache&quot;<br>      ),<br>    &#125;),<br>    new HtmlWebpackPlugin(&#123;<br>      // 以 public/index.html 为模板创建文件<br>      // 新的html文件有两个特点：1. 内容和源文件一致 2. 自动引入打包生成的js等资源<br>      template: path.resolve(__dirname, &quot;../public/index.html&quot;),<br>    &#125;),<br>  ],<br>  // 开发服务器<br>  devServer: &#123;<br>    host: &quot;localhost&quot;, // 启动服务器域名<br>    port: &quot;3000&quot;, // 启动服务器端口号<br>    open: true, // 是否自动打开浏览器<br>    hot: true, // 开启HMR功能<br>  &#125;,<br>  mode: &quot;development&quot;,<br>  devtool: &quot;cheap-module-source-map&quot;,<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<h2 id="Thead"><a href="#Thead" class="headerlink" title="Thead"></a>Thead</h2><h3 id="问题背景-4"><a href="#问题背景-4" class="headerlink" title="问题背景"></a>问题背景</h3><p>当项目越来越庞大时，打包速度越来越慢，甚至于需要一个下午，想要继续提升打包速度，其实就是要提升 js 的打包速度，因为其他文件都比较少。而对 js 文件处理主要就是 eslint 、babel、Terser 三个工具，所以要提升它们的运行速度。</p>
+<p>其实可以开启多进程同时处理 js 文件，这样速度就比之前的单进程打包更快了。</p>
+<h3 id="解决方案-4"><a href="#解决方案-4" class="headerlink" title="解决方案"></a>解决方案</h3><p>多进程打包：开启电脑的多个进程同时干一件事，速度更快。</p>
+<p><strong>需要注意：仅在特别耗时的操作中使用，因为每个进程启动就有大约为 600ms 左右开销。</strong></p>
+<h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><p>启动进程的数量就是 CPU 的核数。</p>
+<ol>
+<li>如何获取 CPU 的核数，因为每个电脑都不一样。</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// nodejs核心模块，直接使用</span><br><span class="hljs-keyword">const</span> os = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;os&quot;</span>);<br><span class="hljs-comment">// cpu核数</span><br><span class="hljs-keyword">const</span> threads = os.<span class="hljs-title function_">cpus</span>().<span class="hljs-property">length</span>;<br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><p>下载包 <code>npm i thread-loader -D</code></p>
+</li>
+<li><p>使用</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br></pre></td><td class="code"><pre><code class="hljs js&#123;1,7,9-10,88-101,118,131,133-143&#125;">const os = require(&quot;os&quot;);<br>const path = require(&quot;path&quot;);<br>const ESLintWebpackPlugin = require(&quot;eslint-webpack-plugin&quot;);<br>const HtmlWebpackPlugin = require(&quot;html-webpack-plugin&quot;);<br>const MiniCssExtractPlugin = require(&quot;mini-css-extract-plugin&quot;);<br>const CssMinimizerPlugin = require(&quot;css-minimizer-webpack-plugin&quot;);<br>const TerserPlugin = require(&quot;terser-webpack-plugin&quot;);//压缩js<br><br>// cpu核数<br>const threads = os.cpus().length;<br><br>// 获取处理样式的Loaders<br>const getStyleLoaders = (preProcessor) =&gt; &#123;<br>  return [<br>    MiniCssExtractPlugin.loader,<br>    &quot;css-loader&quot;,<br>    &#123;<br>      loader: &quot;postcss-loader&quot;,<br>      options: &#123;<br>        postcssOptions: &#123;<br>          plugins: [<br>            &quot;postcss-preset-env&quot;, // 能解决大多数样式兼容性问题<br>          ],<br>        &#125;,<br>      &#125;,<br>    &#125;,<br>    preProcessor,<br>  ].filter(Boolean);<br>&#125;;<br><br>module.exports = &#123;<br>  entry: &quot;./src/main.js&quot;,<br>  output: &#123;<br>    path: path.resolve(__dirname, &quot;../dist&quot;), // 生产模式需要输出<br>    filename: &quot;static/js/main.js&quot;, // 将 js 文件输出到 static/js 目录中<br>    clean: true,<br>  &#125;,<br>  module: &#123;<br>    rules: [<br>      &#123;<br>        oneOf: [<br>          &#123;<br>            // 用来匹配 .css 结尾的文件<br>            test: /\.css$/,<br>            // use 数组里面 Loader 执行顺序是从右到左<br>            use: getStyleLoaders(),<br>          &#125;,<br>          &#123;<br>            test: /\.less$/,<br>            use: getStyleLoaders(&quot;less-loader&quot;),<br>          &#125;,<br>          &#123;<br>            test: /\.s[ac]ss$/,<br>            use: getStyleLoaders(&quot;sass-loader&quot;),<br>          &#125;,<br>          &#123;<br>            test: /\.styl$/,<br>            use: getStyleLoaders(&quot;stylus-loader&quot;),<br>          &#125;,<br>          &#123;<br>            test: /\.(png|jpe?g|gif|webp)$/,<br>            type: &quot;asset&quot;,<br>            parser: &#123;<br>              dataUrlCondition: &#123;<br>                maxSize: 10 * 1024, // 小于10kb的图片会被base64处理<br>              &#125;,<br>            &#125;,<br>            generator: &#123;<br>              // 将图片文件输出到 static/imgs 目录中<br>              // 将图片文件命名 [hash:8][ext][query]<br>              // [hash:8]: hash值取8位<br>              // [ext]: 使用之前的文件扩展名<br>              // [query]: 添加之前的query参数<br>              filename: &quot;static/imgs/[hash:8][ext][query]&quot;,<br>            &#125;,<br>          &#125;,<br>          &#123;<br>            test: /\.(ttf|woff2?)$/,<br>            type: &quot;asset/resource&quot;,<br>            generator: &#123;<br>              filename: &quot;static/media/[hash:8][ext][query]&quot;,<br>            &#125;,<br>          &#125;,<br>          &#123;<br>            test: /\.js$/,<br>            // exclude: /node_modules/, // 排除node_modules代码不编译<br>            include: path.resolve(__dirname, &quot;../src&quot;), // 也可以用包含<br>            use: [<br>              //thead-loader放在babel-loader前面<br>              &#123;<br>                loader: &quot;thread-loader&quot;, // 开启多进程<br>                options: &#123;<br>                  workers: threads, // 数量<br>                &#125;,<br>              &#125;,<br>              &#123;<br>                loader: &quot;babel-loader&quot;,<br>                options: &#123;<br>                  cacheDirectory: true, // 开启babel编译缓存<br>                &#125;,<br>              &#125;,<br>            ],<br>          &#125;,<br>        ],<br>      &#125;,<br>    ],<br>  &#125;,<br>  plugins: [<br>    new ESLintWebpackPlugin(&#123;<br>      // 指定检查文件的根目录<br>      context: path.resolve(__dirname, &quot;../src&quot;),<br>      exclude: &quot;node_modules&quot;, // 默认值<br>      cache: true, // 开启缓存<br>      // 缓存目录<br>      cacheLocation: path.resolve(<br>        __dirname,<br>        &quot;../node_modules/.cache/.eslintcache&quot;<br>      ),<br>      threads, // 开启多进程和设置进程数量<br>    &#125;),<br>    new HtmlWebpackPlugin(&#123;<br>      // 以 public/index.html 为模板创建文件<br>      // 新的html文件有两个特点：1. 内容和源文件一致 2. 自动引入打包生成的js等资源<br>      template: path.resolve(__dirname, &quot;../public/index.html&quot;),<br>    &#125;),<br>    // 提取css成单独文件<br>    new MiniCssExtractPlugin(&#123;<br>      // 定义输出文件名和目录<br>      filename: &quot;static/css/main.css&quot;,<br>    &#125;),<br>    // css压缩<br>    // new CssMinimizerPlugin(),<br>  ],<br>  optimization: &#123;<br>    minimize: true,<br>    minimizer: [<br>      // css压缩也可以写到optimization.minimizer里面，效果一样的<br>      new CssMinimizerPlugin(),<br>      // 当生产模式会默认开启TerserPlugin，但是需要进行其他配置，就要重新写了<br>      new TerserPlugin(&#123;<br>        parallel: threads // 开启多进程<br>      &#125;)<br>    ],<br>  &#125;,<br>  // devServer: &#123;<br>  //   host: &quot;localhost&quot;, // 启动服务器域名<br>  //   port: &quot;3000&quot;, // 启动服务器端口号<br>  //   open: true, // 是否自动打开浏览器<br>  // &#125;,<br>  mode: &quot;production&quot;,<br>  devtool: &quot;source-map&quot;,<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>目前打包的内容都很少，所以因为启动进程开销原因，使用多进程打包实际上会显著的让打包时间变得很长。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/JavaScript%EF%BC%8CWebpack/">JavaScript，Webpack</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/11/24/webpack%E9%AB%98%E7%BA%A7%E9%85%8D%E7%BD%AE1%EF%BC%9A%E5%A6%82%E4%BD%95%E6%8F%90%E5%8D%87%E5%BC%80%E5%8F%91%E4%BD%93%E9%AA%8C/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Webpack高级配置1：SourceMap如何提升开发体验</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/11/22/%E7%94%A8css%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%BD%A9%E8%99%B9/">
+                        <span class="hidden-mobile">用css实现静态和动态彩虹</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>YANG</span></a> <i class="iconfont icon-love"></i> <a href="" target="_blank" rel="nofollow noopener"><span>CODING</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      $('#local-search-input').on('click', function() {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      });
+      $('#modalSearch').on('shown.bs.modal', function() {
+        $('#local-search-input').focus();
+      });
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
