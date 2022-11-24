@@ -163,7 +163,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      664 字
+      668 字
     </span>
   
 
@@ -207,15 +207,11 @@
             
             <div class="markdown-body">
               <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>高级配置的学习，从 4 个角度对 webpack 和代码进行了优化：</p>
-<ol>
-<li>提升开发体验 enhance experince</li>
-</ol>
+<p><strong>1. 提升开发体验 enhance experince</strong></p>
 <ul>
 <li>使用 <code>Source Map</code> 让开发或上线时代码报错能有更加准确的错误提示。</li>
 </ul>
-<ol start="2">
-<li>提升 webpack 提升打包构建速度 lifting speed</li>
-</ol>
+<p><strong>2. 提升 webpack 提升打包构建速度 lifting speed</strong></p>
 <ul>
 <li>使用 <code>HotModuleReplacement</code> 让开发时只重新编译打包更新变化了的代码，不变的代码使用缓存，从而使更新速度更快。</li>
 <li>使用 <code>OneOf</code> 让资源文件一旦被某个 loader 处理了，就不会继续遍历了，打包速度更快。</li>
@@ -223,17 +219,13 @@
 <li>使用 <code>Cache</code> 对 eslint 和 babel 处理的结果进行缓存，让第二次打包速度更快。</li>
 <li>使用 <code>Thead</code> 多进程处理 eslint 和 babel 任务，速度更快。（需要注意的是，进程启动通信都有开销的，要在比较多代码处理时使用才有效果, 所以开发的时候不要一上来就用多进程，等项目庞大确实感到打包速度很慢时才用，要是没有明显提升，就过段时间再用）</li>
 </ul>
-<ol start="3">
-<li>减少代码体积 reduce volume</li>
-</ol>
+<p><strong>3. 减少代码体积 reduce volume</strong></p>
 <ul>
 <li>🌲 使用 <code>Tree Shaking</code> 剔除了没有使用的多余代码，让代码体积更小。</li>
 <li>使用 <code>@babel/plugin-transform-runtime</code> 插件对 babel 进行处理，让辅助代码从中引入，而不是每个文件都生成辅助代码，从而体积更小。</li>
 <li>使用 <code>Image Minimizer</code> 对项目中图片进行压缩，体积更小，请求速度更快。（需要注意的是，如果项目中图片都是在线链接，那么就不需要了；本地项目静态图片才需要进行压缩。）</li>
 </ul>
-<ol start="4">
-<li>优化代码运行性能 optimize performance</li>
-</ol>
+<p><strong>4. 优化代码运行性能 optimize performance</strong></p>
 <ul>
 <li>使用 <code>Code Split</code> 对代码进行分割成多个 js 文件，从而使单个文件体积更小，并行加载 js 速度更快。并通过 import 动态导入语法进行按需加载，这里主要体现在路由懒加载上，从而达到需要使用时才加载该资源，不用时不加载资源。</li>
 <li>使用 <code>Preload / Prefetch</code> 对代码进行提前加载，等未来需要使用时就能直接使用，从而用户体验更好。</li>
@@ -273,7 +265,7 @@
                     
                     
                       <a href="/2022/11/24/Webpack%E9%AB%98%E7%BA%A7%E9%85%8D%E7%BD%AE4%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BC%98%E5%8C%96%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E6%80%A7%E8%83%BD/">
-                        <span class="hidden-mobile">Webpack高级配置4：如何优化代码运行性能</span>
+                        <span class="hidden-mobile">Webpack高级配置 4：如何优化代码运行性能</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

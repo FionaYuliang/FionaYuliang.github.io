@@ -170,17 +170,13 @@
             
           
           总结高级配置的学习，从 4 个角度对 webpack 和代码进行了优化：
-
-提升开发体验 enhance experince
-
+1. 提升开发体验 enhance experince
 
 使用 Source Map 让开发或上线时代码报错能有更加准确的错误提示。
 
+2. 提升 webpack 提升打包构建速度 lifting speed
 
-提升 webpack 提升打包构建速度 lifting speed
-
-
-使用 HotModuleReplacement 让开发时只重新编译打包更新变化了的代码，不变的代码使用缓存，从而使更新
+使用 HotModuleReplacement 让开发时只重新编译打包更新变化了的代码，不变的代码使用缓存，从而使
         </a>
       </p>
 
@@ -212,7 +208,7 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/11/24/Webpack%E9%AB%98%E7%BA%A7%E9%85%8D%E7%BD%AE4%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BC%98%E5%8C%96%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E6%80%A7%E8%83%BD/">Webpack高级配置4：如何优化代码运行性能</a>
+        <a href="/2022/11/24/Webpack%E9%AB%98%E7%BA%A7%E9%85%8D%E7%BD%AE4%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BC%98%E5%8C%96%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E6%80%A7%E8%83%BD/">Webpack高级配置 4：如何优化代码运行性能</a>
       </h1>
 
       <p class="index-excerpt">
@@ -221,11 +217,9 @@
           
             
           
-          优化代码运行性能Code Split问题背景打包代码时会将所有 js 文件打包到一个文件中，体积太大了。如果只要渲染首页，就应该只加载首页的 js 文件，其他文件不应该加载。
+          优化代码运行性能 optimize performanceCode Split问题背景打包代码时会将所有 js 文件打包到一个文件中，体积太大了。如果只要渲染首页，就应该只加载首页的 js 文件，其他文件不应该加载。
 所以需要将打包生成的文件进行代码分割，生成多个 js 文件，渲染哪个页面就只加载某个 js 文件，这样加载的资源就少，速度就更快。
-解决方案代码分割（Code Split）主要做了两件事：
-
-分割文件：将打包生成的文件进行分
+解决方案代码分割（Code Split）主要做了两
         </a>
       </p>
 
@@ -257,7 +251,7 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/11/24/webpack%E9%AB%98%E7%BA%A7%E9%85%8D%E7%BD%AE3%EF%BC%9A%E5%A6%82%E4%BD%95%E5%87%8F%E5%B0%91%E4%BB%A3%E7%A0%81%E4%BD%93%E7%A7%AF/">Webpack高级配置3：如何减少代码体积</a>
+        <a href="/2022/11/24/webpack%E9%AB%98%E7%BA%A7%E9%85%8D%E7%BD%AE3%EF%BC%9A%E5%A6%82%E4%BD%95%E5%87%8F%E5%B0%91%E4%BB%A3%E7%A0%81%E4%BD%93%E7%A7%AF/">Webpack 高级配置3：如何减少代码体积</a>
       </h1>
 
       <p class="index-excerpt">
@@ -266,8 +260,8 @@
           
             
           
-          减少代码体积 reduceVolume🌲Tree Shaking开发时定义了一些工具函数库，或者引用第三方工具函数库或组件库。如果没有特殊处理，打包时会引入整个库，但是实际上可能只用一小部分。这样将整个库都打包进来，体积就太大了。
-Tree Shaking 是一个术语，通常用于描述移除 JavaScript 中的没有使用上的代码。注意：它依赖 ES Module。Webpack 默认开启，无需配
+          减少代码体积 reduce volume🌲Tree Shaking开发时定义了一些工具函数库，或者引用第三方工具函数库或组件库。如果没有特殊处理，打包时会引入整个库，但是实际上可能只用一小部分。这样将整个库都打包进来，体积就太大了。
+Tree Shaking 是一个术语，通常用于描述移除 JavaScript 中的没有使用上的代码。注意：它依赖 ES Module。Webpack 默认开启，无需
         </a>
       </p>
 
@@ -299,7 +293,7 @@ Tree Shaking 是一个术语，通常用于描述移除 JavaScript 中的没有�
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/11/24/webpack%E9%AB%98%E7%BA%A7%E9%85%8D%E7%BD%AE2%EF%BC%9A%E5%A6%82%E4%BD%95%E6%8F%90%E9%AB%98%E6%89%93%E5%8C%85%E6%9E%84%E5%BB%BA%E9%80%9F%E5%BA%A6/">Webpack高级配置2：如何提高打包构建速度</a>
+        <a href="/2022/11/24/webpack%E9%AB%98%E7%BA%A7%E9%85%8D%E7%BD%AE2%EF%BC%9A%E5%A6%82%E4%BD%95%E6%8F%90%E9%AB%98%E6%89%93%E5%8C%85%E6%9E%84%E5%BB%BA%E9%80%9F%E5%BA%A6/">Webpack 高级配置2：如何提高打包构建速度</a>
       </h1>
 
       <p class="index-excerpt">
@@ -341,7 +335,7 @@ Tree Shaking 是一个术语，通常用于描述移除 JavaScript 中的没有�
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/11/24/webpack%E9%AB%98%E7%BA%A7%E9%85%8D%E7%BD%AE1%EF%BC%9A%E5%A6%82%E4%BD%95%E6%8F%90%E5%8D%87%E5%BC%80%E5%8F%91%E4%BD%93%E9%AA%8C/">Webpack高级配置1：SourceMap如何提升开发体验</a>
+        <a href="/2022/11/24/webpack%E9%AB%98%E7%BA%A7%E9%85%8D%E7%BD%AE1%EF%BC%9A%E5%A6%82%E4%BD%95%E6%8F%90%E5%8D%87%E5%BC%80%E5%8F%91%E4%BD%93%E9%AA%8C/">Webpack 高级配置1：SourceMap 如何提升开发体验</a>
       </h1>
 
       <p class="index-excerpt">
