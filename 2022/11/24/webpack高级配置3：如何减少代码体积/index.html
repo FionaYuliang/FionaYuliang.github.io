@@ -1,0 +1,471 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  
+    <meta name="description" content="一位女性程序员的自我修养-PHP,Laravel,MYSQL,JavaScript,Vue,React">
+  
+  <meta name="author" content="FionaYuliang">
+  <meta name="keywords" content="">
+  
+  <title>Webpack高级配置3：如何减少代码体积 - 雪舟寺的技术博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"fionayuliang.github.io","root":"/","version":"1.8.8","typing":{"enable":true,"typeSpeed":85,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  <header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>雪舟寺</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Webpack高级配置3：如何减少代码体积">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-11-24 21:39" pubdate>
+        2022年11月24日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      30
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Webpack高级配置3：如何减少代码体积</h1>
+            
+            <div class="markdown-body">
+              <h1 id="减少代码体积-reduceVolume"><a href="#减少代码体积-reduceVolume" class="headerlink" title="减少代码体积 reduceVolume"></a>减少代码体积 reduceVolume</h1><h2 id="🌲Tree-Shaking"><a href="#🌲Tree-Shaking" class="headerlink" title="🌲Tree Shaking"></a>🌲Tree Shaking</h2><p>开发时定义了一些工具函数库，或者引用第三方工具函数库或组件库。如果没有特殊处理，打包时会引入整个库，但是实际上可能只用一小部分。这样将整个库都打包进来，体积就太大了。</p>
+<p><code>Tree Shaking</code> 是一个术语，通常用于描述移除 JavaScript 中的没有使用上的代码。注意：它依赖 <code>ES Module</code>。<br>Webpack 默认开启，无需配置。</p>
+<h2 id="Babel"><a href="#Babel" class="headerlink" title="Babel"></a>Babel</h2><h3 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h3><p>Babel 为编译的每个文件都插入了辅助代码，使代码体积过大。例如，对一些公共方法使用了非常小的辅助代码，比如 <code>_extend</code>，默认情况下会被添加到每一个需要它的文件中。其实开发者可以将这些辅助代码、作为一个独立模块，随用随引，来避免重复引入。</p>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p><code>@babel/plugin-transform-runtime</code>: 禁用了 Babel 自动对每个文件的 runtime 注入，而是引入。并且使所有辅助代码从这里引用。</p>
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><ol>
+<li><p>下载包 <code>npm i @babel/plugin-transform-runtime -D</code></p>
+</li>
+<li><p>配置</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br></pre></td><td class="code"><pre><code class="hljs js&#123;100&#125;">const os = require(&quot;os&quot;);<br>const path = require(&quot;path&quot;);<br>const ESLintWebpackPlugin = require(&quot;eslint-webpack-plugin&quot;);<br>const HtmlWebpackPlugin = require(&quot;html-webpack-plugin&quot;);<br>const MiniCssExtractPlugin = require(&quot;mini-css-extract-plugin&quot;);<br>const CssMinimizerPlugin = require(&quot;css-minimizer-webpack-plugin&quot;);<br>const TerserPlugin = require(&quot;terser-webpack-plugin&quot;);<br><br>// cpu核数<br>const threads = os.cpus().length;<br><br>// 获取处理样式的Loaders<br>const getStyleLoaders = (preProcessor) =&gt; &#123;<br>  return [<br>    MiniCssExtractPlugin.loader,<br>    &quot;css-loader&quot;,<br>    &#123;<br>      loader: &quot;postcss-loader&quot;,<br>      options: &#123;<br>        postcssOptions: &#123;<br>          plugins: [<br>            &quot;postcss-preset-env&quot;, // 能解决大多数样式兼容性问题<br>          ],<br>        &#125;,<br>      &#125;,<br>    &#125;,<br>    preProcessor,<br>  ].filter(Boolean);<br>&#125;;<br><br>module.exports = &#123;<br>  entry: &quot;./src/main.js&quot;,<br>  output: &#123;<br>    path: path.resolve(__dirname, &quot;../dist&quot;), // 生产模式需要输出<br>    filename: &quot;static/js/main.js&quot;, // 将 js 文件输出到 static/js 目录中<br>    clean: true,<br>  &#125;,<br>  module: &#123;<br>    rules: [<br>      &#123;<br>        oneOf: [<br>          &#123;<br>            // 用来匹配 .css 结尾的文件<br>            test: /\.css$/,<br>            // use 数组里面 Loader 执行顺序是从右到左<br>            use: getStyleLoaders(),<br>          &#125;,<br>          &#123;<br>            test: /\.less$/,<br>            use: getStyleLoaders(&quot;less-loader&quot;),<br>          &#125;,<br>          &#123;<br>            test: /\.s[ac]ss$/,<br>            use: getStyleLoaders(&quot;sass-loader&quot;),<br>          &#125;,<br>          &#123;<br>            test: /\.styl$/,<br>            use: getStyleLoaders(&quot;stylus-loader&quot;),<br>          &#125;,<br>          &#123;<br>            test: /\.(png|jpe?g|gif|webp)$/,<br>            type: &quot;asset&quot;,<br>            parser: &#123;<br>              dataUrlCondition: &#123;<br>                maxSize: 10 * 1024, // 小于10kb的图片会被base64处理<br>              &#125;,<br>            &#125;,<br>            generator: &#123;<br>              // 将图片文件输出到 static/imgs 目录中<br>              // 将图片文件命名 [hash:8][ext][query]<br>              // [hash:8]: hash值取8位<br>              // [ext]: 使用之前的文件扩展名<br>              // [query]: 添加之前的query参数<br>              filename: &quot;static/imgs/[hash:8][ext][query]&quot;,<br>            &#125;,<br>          &#125;,<br>          &#123;<br>            test: /\.(ttf|woff2?)$/,<br>            type: &quot;asset/resource&quot;,<br>            generator: &#123;<br>              filename: &quot;static/media/[hash:8][ext][query]&quot;,<br>            &#125;,<br>          &#125;,<br>          &#123;<br>            test: /\.js$/,<br>            // exclude: /node_modules/, // 排除node_modules代码不编译<br>            include: path.resolve(__dirname, &quot;../src&quot;), // 也可以用包含<br>            use: [<br>              &#123;<br>                loader: &quot;thread-loader&quot;, // 开启多进程<br>                options: &#123;<br>                  workers: threads, // 数量<br>                &#125;,<br>              &#125;,<br>              &#123;<br>                loader: &quot;babel-loader&quot;,<br>                options: &#123;<br>                  cacheDirectory: true, // 开启babel编译缓存<br>                  cacheCompression: false, // 缓存文件不要压缩<br>                  plugins: [&quot;@babel/plugin-transform-runtime&quot;], // 减少代码体积<br>                &#125;,<br>              &#125;,<br>            ],<br>          &#125;,<br>        ],<br>      &#125;,<br>    ],<br>  &#125;,<br>  plugins: [<br>    new ESLintWebpackPlugin(&#123;<br>      // 指定检查文件的根目录<br>      context: path.resolve(__dirname, &quot;../src&quot;),<br>      exclude: &quot;node_modules&quot;, // 默认值<br>      cache: true, // 开启缓存<br>      // 缓存目录<br>      cacheLocation: path.resolve(<br>        __dirname,<br>        &quot;../node_modules/.cache/.eslintcache&quot;<br>      ),<br>      threads, // 开启多进程<br>    &#125;),<br>    new HtmlWebpackPlugin(&#123;<br>      // 以 public/index.html 为模板创建文件<br>      // 新的html文件有两个特点：1. 内容和源文件一致 2. 自动引入打包生成的js等资源<br>      template: path.resolve(__dirname, &quot;../public/index.html&quot;),<br>    &#125;),<br>    // 提取css成单独文件<br>    new MiniCssExtractPlugin(&#123;<br>      // 定义输出文件名和目录<br>      filename: &quot;static/css/main.css&quot;,<br>    &#125;),<br>    // css压缩<br>    // new CssMinimizerPlugin(),<br>  ],<br>  optimization: &#123;<br>    minimizer: [<br>      // css压缩也可以写到optimization.minimizer里面，效果一样的<br>      new CssMinimizerPlugin(),<br>      // 当生产模式会默认开启TerserPlugin，但是我们需要进行其他配置，就要重新写了<br>      new TerserPlugin(&#123;<br>        parallel: threads, // 开启多进程<br>      &#125;),<br>    ]<br>  ],<br>  // devServer: &#123;<br>  //   host: &quot;localhost&quot;, // 启动服务器域名<br>  //   port: &quot;3000&quot;, // 启动服务器端口号<br>  //   open: true, // 是否自动打开浏览器<br>  // &#125;,<br>  mode: &quot;production&quot;,<br>  devtool: &quot;source-map&quot;,<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<h2 id="Image-Minimizer"><a href="#Image-Minimizer" class="headerlink" title="Image Minimizer"></a>Image Minimizer</h2><h3 id="问题背景-1"><a href="#问题背景-1" class="headerlink" title="问题背景"></a>问题背景</h3><p>如果项目中引用了较多图片，那么图片体积会比较大，将来请求速度比较慢。可以对图片进行压缩，减少图片体积。另外，如果图片都是在线链接，那么就不需要了。本地项目静态图片才需要进行压缩</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p><code>image-minimizer-webpack-plugin</code>: 用来压缩图片的插件</p>
+<h3 id="使用办法"><a href="#使用办法" class="headerlink" title="使用办法"></a>使用办法</h3><ol>
+<li>下载包  <code>npm i image-minimizer-webpack-plugin imagemin -D</code><br>还有剩下包需要下载，有两种模式：</li>
+</ol>
+<ul>
+<li><p>无损压缩 <code>npm install imagemin-gifsicle imagemin-jpegtran imagemin-optipng imagemin-svgo -D</code></p>
+</li>
+<li><p>有损压缩 <code>npm install imagemin-gifsicle imagemin-mozjpeg imagemin-pngquant imagemin-svgo -D</code></p>
+</li>
+</ul>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%97%A0%E6%8D%9F%E3%80%81%E6%9C%89%E6%8D%9F%E5%8E%8B%E7%BC%A9">有损&#x2F;无损压缩的区别</a></p>
+</blockquote>
+<ol start="2">
+<li>配置</li>
+</ol>
+<p>以无损压缩配置为例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br></pre></td><td class="code"><pre><code class="hljs js&#123;8,144-171&#125;">const os = require(&quot;os&quot;);<br>const path = require(&quot;path&quot;);<br>const ESLintWebpackPlugin = require(&quot;eslint-webpack-plugin&quot;);<br>const HtmlWebpackPlugin = require(&quot;html-webpack-plugin&quot;);<br>const MiniCssExtractPlugin = require(&quot;mini-css-extract-plugin&quot;);<br>const CssMinimizerPlugin = require(&quot;css-minimizer-webpack-plugin&quot;);<br>const TerserPlugin = require(&quot;terser-webpack-plugin&quot;);<br>const ImageMinimizerPlugin = require(&quot;image-minimizer-webpack-plugin&quot;);<br><br><br>// cpu核数<br>const threads = os.cpus().length;<br><br>// 获取处理样式的Loaders<br>const getStyleLoaders = (preProcessor) =&gt; &#123;<br>  return [<br>    MiniCssExtractPlugin.loader,<br>    &quot;css-loader&quot;,<br>    &#123;<br>      loader: &quot;postcss-loader&quot;,<br>      options: &#123;<br>        postcssOptions: &#123;<br>          plugins: [<br>            &quot;postcss-preset-env&quot;, // 能解决大多数样式兼容性问题<br>          ],<br>        &#125;,<br>      &#125;,<br>    &#125;,<br>    preProcessor,<br>  ].filter(Boolean);<br>&#125;;<br><br>module.exports = &#123;<br>  entry: &quot;./src/main.js&quot;,<br>  output: &#123;<br>    path: path.resolve(__dirname, &quot;../dist&quot;), // 生产模式需要输出<br>    filename: &quot;static/js/main.js&quot;, // 将 js 文件输出到 static/js 目录中<br>    clean: true,<br>  &#125;,<br>  module: &#123;<br>    rules: [<br>      &#123;<br>        oneOf: [<br>          &#123;<br>            // 用来匹配 .css 结尾的文件<br>            test: /\.css$/,<br>            // use 数组里面 Loader 执行顺序是从右到左<br>            use: getStyleLoaders(),<br>          &#125;,<br>          &#123;<br>            test: /\.less$/,<br>            use: getStyleLoaders(&quot;less-loader&quot;),<br>          &#125;,<br>          &#123;<br>            test: /\.s[ac]ss$/,<br>            use: getStyleLoaders(&quot;sass-loader&quot;),<br>          &#125;,<br>          &#123;<br>            test: /\.styl$/,<br>            use: getStyleLoaders(&quot;stylus-loader&quot;),<br>          &#125;,<br>          &#123;<br>            test: /\.(png|jpe?g|gif|svg)$/,<br>            type: &quot;asset&quot;,<br>            parser: &#123;<br>              dataUrlCondition: &#123;<br>                maxSize: 10 * 1024, // 小于10kb的图片会被base64处理<br>              &#125;,<br>            &#125;,<br>            generator: &#123;<br>              // 将图片文件输出到 static/imgs 目录中<br>              // 将图片文件命名 [hash:8][ext][query]<br>              // [hash:8]: hash值取8位<br>              // [ext]: 使用之前的文件扩展名<br>              // [query]: 添加之前的query参数<br>              filename: &quot;static/imgs/[hash:8][ext][query]&quot;,<br>            &#125;,<br>          &#125;,<br>          &#123;<br>            test: /\.(ttf|woff2?)$/,<br>            type: &quot;asset/resource&quot;,<br>            generator: &#123;<br>              filename: &quot;static/media/[hash:8][ext][query]&quot;,<br>            &#125;,<br>          &#125;,<br>          &#123;<br>            test: /\.js$/,<br>            // exclude: /node_modules/, // 排除node_modules代码不编译<br>            include: path.resolve(__dirname, &quot;../src&quot;), // 也可以用包含<br>            use: [<br>              &#123;<br>                loader: &quot;thread-loader&quot;, // 开启多进程<br>                options: &#123;<br>                  workers: threads, // 数量<br>                &#125;,<br>              &#125;,<br>              &#123;<br>                loader: &quot;babel-loader&quot;,<br>                options: &#123;<br>                  cacheDirectory: true, // 开启babel编译缓存<br>                  cacheCompression: false, // 缓存文件不要压缩<br>                  plugins: [&quot;@babel/plugin-transform-runtime&quot;], // 减少代码体积<br>                &#125;,<br>              &#125;,<br>            ],<br>          &#125;,<br>        ],<br>      &#125;,<br>    ],<br>  &#125;,<br>  plugins: [<br>    new ESLintWebpackPlugin(&#123;<br>      // 指定检查文件的根目录<br>      context: path.resolve(__dirname, &quot;../src&quot;),<br>      exclude: &quot;node_modules&quot;, // 默认值<br>      cache: true, // 开启缓存<br>      // 缓存目录<br>      cacheLocation: path.resolve(<br>        __dirname,<br>        &quot;../node_modules/.cache/.eslintcache&quot;<br>      ),<br>      threads, // 开启多进程<br>    &#125;),<br>    new HtmlWebpackPlugin(&#123;<br>      // 以 public/index.html 为模板创建文件<br>      // 新的html文件有两个特点：1. 内容和源文件一致 2. 自动引入打包生成的js等资源<br>      template: path.resolve(__dirname, &quot;../public/index.html&quot;),<br>    &#125;),<br>    // 提取css成单独文件<br>    new MiniCssExtractPlugin(&#123;<br>      // 定义输出文件名和目录<br>      filename: &quot;static/css/main.css&quot;,<br>    &#125;),<br>    // css压缩<br>    // new CssMinimizerPlugin(),<br>  ],<br>  optimization: &#123;<br>    minimizer: [<br>      // css压缩也可以写到optimization.minimizer里面，效果一样的<br>      new CssMinimizerPlugin(),<br>      // 当生产模式会默认开启TerserPlugin，但是我们需要进行其他配置，就要重新写了<br>      new TerserPlugin(&#123;<br>        parallel: threads, // 开启多进程<br>      &#125;),<br>      // 压缩图片，这一块直接复制即可，有时候包会下载不下来<br>      new ImageMinimizerPlugin(&#123;<br>        minimizer: &#123;<br>          implementation: ImageMinimizerPlugin.imageminGenerate,<br>          options: &#123;<br>            plugins: [<br>              [&quot;gifsicle&quot;, &#123; interlaced: true &#125;],<br>              [&quot;jpegtran&quot;, &#123; progressive: true &#125;],<br>              [&quot;optipng&quot;, &#123; optimizationLevel: 5 &#125;],<br>              [<br>                &quot;svgo&quot;,<br>                &#123;<br>                  plugins: [<br>                    &quot;preset-default&quot;,<br>                    &quot;prefixIds&quot;,<br>                    &#123;<br>                      name: &quot;sortAttrs&quot;,<br>                      params: &#123;<br>                        xmlnsOrder: &quot;alphabetical&quot;,<br>                      &#125;,<br>                    &#125;,<br>                  ],<br>                &#125;,<br>              ],<br>            ],<br>          &#125;,<br>        &#125;,<br>      &#125;),<br>    ],<br>  &#125;,<br>  // devServer: &#123;<br>  //   host: &quot;localhost&quot;, // 启动服务器域名<br>  //   port: &quot;3000&quot;, // 启动服务器端口号<br>  //   open: true, // 是否自动打开浏览器<br>  // &#125;,<br>  mode: &quot;production&quot;,<br>  devtool: &quot;source-map&quot;,<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>打包时出现了报错：</li>
+</ol>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs subunit"><span class="hljs-keyword">Error: </span>Error with &#x27;src\images\1.jpeg&#x27;: &#x27;&quot;C:\Users\86176\Desktop\webpack\webpack_code\node_modules\jpegtran-bin\vendor\jpegtran.exe&quot;&#x27;<br><span class="hljs-keyword">Error </span>with &#x27;src\images\3.gif&#x27;: spawn C:\Users\86176\Desktop\webpack\webpack_code\node_modules\optipng-bin\vendor\optipng.exe ENOENT<br></code></pre></td></tr></table></figure>
+
+<p>需要安装两个文件到 node_modules 中，可以从官网下载然后放到目录下面</p>
+<ul>
+<li>jpegtran.exe，复制到 <code>node_modules\jpegtran-bin\vendor</code> 下面</li>
+</ul>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="http://jpegclub.org/jpegtran/">jpegtran 官网地址</a></p>
+</blockquote>
+<ul>
+<li>optipng.exe，复制到 <code>node_modules\optipng-bin\vendor</code> 下面</li>
+</ul>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="http://optipng.sourceforge.net/">OptiPNG 官网地址</a></p>
+</blockquote>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/JavaScript%EF%BC%8CWebpack/">JavaScript，Webpack</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/11/24/Webpack%E9%AB%98%E7%BA%A7%E9%85%8D%E7%BD%AE4%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BC%98%E5%8C%96%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E6%80%A7%E8%83%BD/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Webpack高级配置4：如何优化代码运行性能</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/11/24/webpack%E9%AB%98%E7%BA%A7%E9%85%8D%E7%BD%AE2%EF%BC%9A%E5%A6%82%E4%BD%95%E6%8F%90%E9%AB%98%E6%89%93%E5%8C%85%E6%9E%84%E5%BB%BA%E9%80%9F%E5%BA%A6/">
+                        <span class="hidden-mobile">Webpack高级配置2：如何提高打包构建速度</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>YANG</span></a> <i class="iconfont icon-love"></i> <a href="" target="_blank" rel="nofollow noopener"><span>CODING</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      $('#local-search-input').on('click', function() {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      });
+      $('#modalSearch').on('shown.bs.modal', function() {
+        $('#local-search-input').focus();
+      });
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
