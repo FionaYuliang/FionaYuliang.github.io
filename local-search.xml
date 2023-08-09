@@ -4,6 +4,25 @@
   
   
   <entry>
+    <title>今日阅读-工作相关内容</title>
+    <link href="/2023/04/24/%E4%BB%8A%E6%97%A5%E9%98%85%E8%AF%BB-%E5%B7%A5%E4%BD%9C%E7%9B%B8%E5%85%B3%E5%86%85%E5%AE%B9/"/>
+    <url>/2023/04/24/%E4%BB%8A%E6%97%A5%E9%98%85%E8%AF%BB-%E5%B7%A5%E4%BD%9C%E7%9B%B8%E5%85%B3%E5%86%85%E5%AE%B9/</url>
+    
+    <content type="html"><![CDATA[<h1 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h1><p>每天的生活被各式各样的碎片信息充斥着，看过很多好文章，可能也会淹没在信息洪流里了。像石墨、语雀等自己也在用，不过比较私人化，于是就仿照浏览器的分类收藏夹功能，建立一个可公开的、可溯源时间线的、属于自己的阅读知识库，同时，和同行、同事、朋友定期交流也方便了很多。</p><p>所以就有了置顶的这两篇「今日阅读」，这篇是工作相关，另一篇生活相关。</p><p>宇宙遨游，定期打捞。</p><h1 id="2023年04月20日"><a href="#2023年04月20日" class="headerlink" title="2023年04月20日"></a>2023年04月20日</h1><ul><li><a href="https://poke-holo.simey.me/">宝可梦卡片</a><ul><li>一个几乎是纯css的项目，只把js用于获取鼠标位置和生成随机参数</li><li>项目地址：<a href="https://github.com/simeydotme/pokemon-cards-css">https://github.com/simeydotme/pokemon-cards-css</a></li></ul></li></ul>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>what-read-today</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Webpack 高级配置总结</title>
     <link href="/2022/11/24/Webpack%20%E9%AB%98%E7%BA%A7%E9%85%8D%E7%BD%AE%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
     <url>/2022/11/24/Webpack%20%E9%AB%98%E7%BA%A7%E9%85%8D%E7%BD%AE%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/</url>
