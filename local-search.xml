@@ -4,6 +4,25 @@
   
   
   <entry>
+    <title>Noode.js 常用APO</title>
+    <link href="/2023/08/22/Node.js%20%E5%B8%B8%E7%94%A8API/"/>
+    <url>/2023/08/22/Node.js%20%E5%B8%B8%E7%94%A8API/</url>
+    
+    <content type="html"><![CDATA[<h1 id="模块系统"><a href="#模块系统" class="headerlink" title="模块系统"></a>模块系统</h1><p> node 内模块分为三种,核心模块,文件模块,第三方模块.其中文件模块式内置库,不需要 require 就可以引用</p><h2 id="path-路径"><a href="#path-路径" class="headerlink" title="path 路径"></a>path 路径</h2><ul><li>path.join</li><li>path.resolve</li><li>path.extname</li></ul><h2 id="file-system-文件系统"><a href="#file-system-文件系统" class="headerlink" title="file system 文件系统"></a>file system 文件系统</h2><ul><li>创建文件夹：fs.mkdirSync</li><li>删除文件夹: fs.rmdirSync</li><li>创建文件: fs.writeFile</li><li>删除文件: fs.unlinkSync</li><li>文件是否存在: fs.exitsSync</li><li>文件是否可被访问: fs.access</li><li>查看子目录: fs.readdirSync(path)</li><li>同步读取文件: fs.readFile</li></ul>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>nodejs</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>今日阅读-工作相关内容</title>
     <link href="/2023/08/09/%E4%BB%8A%E6%97%A5%E9%98%85%E8%AF%BB-%E5%B7%A5%E4%BD%9C%E7%9B%B8%E5%85%B3%E5%86%85%E5%AE%B9/"/>
     <url>/2023/08/09/%E4%BB%8A%E6%97%A5%E9%98%85%E8%AF%BB-%E5%B7%A5%E4%BD%9C%E7%9B%B8%E5%85%B3%E5%86%85%E5%AE%B9/</url>
